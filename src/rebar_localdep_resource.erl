@@ -17,11 +17,14 @@ needs_update(_AppDir, _Resource) ->
 download(AppDir, {localdep, Path}, _State) ->
     download(AppDir, {localdep, Path, {exclude, []}}, _State);
 download(AppDir, {localdep, Path, {exclude, ExcludedFiles}}, _State) ->
+        io:format("~n =========================== AppDir: ~p|| Path : ~p", [AppDir, Path]),
     case os:getenv("LOCALDEP_DIR") of
         false ->
             {fetch_fail, "`LOCALDEP_DIR` env variable not defined."};
         LocaldepDir ->
+                    io:format("~n =========================== LocaldepDir: ~p||", [LocaldepDir]),
             DepFolder = filename:join([LocaldepDir, Path]),
+                    io:format("~n =========================== DepFolder: ~p||", [DepFolder]),
             case file:list_dir(DepFolder) of
                 {ok, FilesOrFolders} ->
                     ValidFilesToCopy = lists:flatmap(fun(File) ->
